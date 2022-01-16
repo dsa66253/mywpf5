@@ -43,10 +43,11 @@ const MyNavbar = () => {
     console.log(success, detail, admin)
     if(success){
       message.success("Welcome!", username);
+      setIsLogInModalVisible(false);
     }else{
       message.error("Wrong with username or password!");
     }
-    setIsLogInModalVisible(false);
+    
   };
   const handleLogInCancel = () => {
     setIsLogInModalVisible(false);
@@ -59,18 +60,25 @@ const MyNavbar = () => {
     console.log("handleSignUpOk called", CREATE_USER_MUTATION)
     // let passwordHash = await bcrypt.hash(password, saltRounds);
     // todo 改成axios https比較安全
-    let tmp = await createUser({
-      variables:{
-        username:username,
-        password:password,
-        email:email
-      }
-    })
-    // console.log("tmp", tmp)
-    setUsername("");
-    setEmail("");
-    setPassword("");
-    setIsSignUpModalVisible(false);
+    if (username==="" || password==="" || email===""){
+      message.error("Each fields required");
+    }else{
+      let tmp = await createUser({
+        variables:{
+          username:username,
+          password:password,
+          email:email
+        }
+      })
+      // console.log("tmp", tmp)
+      setUsername("");
+      setEmail("");
+      setPassword("");
+      setIsSignUpModalVisible(false);
+      message.success("finish registration");
+    }
+
+
   };
   const handleSignUpCancel = () => {
     setIsSignUpModalVisible(false);
@@ -153,14 +161,14 @@ const MyNavbar = () => {
 
       </Nav>
       <Modal title="Log In" visible={isLogInModalVisible} onOk={handleLogInOk} onCancel={handleLogInCancel}>
-        <div><TextField value={username} id="username" label="username" variant="outlined" onChange={(e)=>setUsername(e.target.value)}/></div>
+        <div><TextField  required value={username} id="username" label="username" variant="outlined" onChange={(e)=>setUsername(e.target.value)}/></div>
         {/* <div><TextField value={email} id="email" label="email" variant="outlined" onChange={(e)=>setEmail(e.target.value)}/></div> */}
-        <div><TextField type="password" value={password} id="password" label="password" variant="outlined" onChange={(e)=>setPassword(e.target.value)}/></div>
+        <div><TextField required type="password" value={password} id="password" label="password" variant="outlined" onChange={(e)=>setPassword(e.target.value)}/></div>
       </Modal>
       <Modal title="Sign up" visible={isSignUpModalVisible} onOk={handleSignUpOk} onCancel={handleSignUpCancel}>
-        <div><TextField value={username} id="username" label="username" variant="outlined" onChange={(e)=>setUsername(e.target.value)}/></div>
-        <div><TextField value={email} id="email" label="email" variant="outlined" onChange={(e)=>setEmail(e.target.value)}/></div>
-        <div><TextField type="password" value={password} id="password" label="password" variant="outlined" onChange={(e)=>setPassword(e.target.value)}/></div>
+        <div><TextField required value={username} id="username" label="username" variant="outlined" onChange={(e)=>setUsername(e.target.value)}/></div>
+        <div><TextField required value={email} id="email" label="email" variant="outlined" onChange={(e)=>setEmail(e.target.value)}/></div>
+        <div><TextField required type="password" value={password} id="password" label="password" variant="outlined" onChange={(e)=>setPassword(e.target.value)}/></div>
       </Modal>
     </>
   )
