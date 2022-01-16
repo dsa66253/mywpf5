@@ -24,8 +24,9 @@ const Query = {
     },
     async queryUser(parent, {username}, { db }, info){
         // use to queryUser details
+        console.log("after checkUser() username", username)
         let user = checkUser(db, username)
-        console.log("after checkUser()")
+        
         if (!user) throw new Error("Missing chatBox name for CreateChatBox");
         return user
 
@@ -41,7 +42,8 @@ const Query = {
                 detail:"not found user"
             }
         }
-        let res = await bcrypt.compare(password, user.password);
+        // let res = await bcrypt.compare(password, user.password);
+        let res = user.password ===password
         console.log("compare res", res)
         
         if(res){

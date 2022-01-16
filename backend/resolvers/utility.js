@@ -74,7 +74,18 @@ const getAllUsers = async (db)=>{
     let tmp = await db.UserModel.find({});
     console.log("qeruyAllUsers()", tmp)
     return tmp ;
-
+}
+const findPostById = async (db, id)=>{
+    console.log("id", id)
+    let post = await db.PostModel.findById(id);
+    console.log("db.PostModel.findById(id);", post)
+    return post
+}
+const deletePostById = async (db, id)=>{
+    console.log("id", id)
+    let post = await db.PostModel.deleteOne({id:id});
+    console.log("db.PostModel.findById(id);", post)
+    return post
 }
 export{
     getPosts,
@@ -88,4 +99,6 @@ export{
     newChatBox,
     addMessageToChatBox,
     getAllUsers,
+    findPostById,
+    deletePostById,
 };

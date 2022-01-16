@@ -2,7 +2,18 @@ type Mutation{
     createChatBox(name1: String, name2: String): ChatBox
     createMessage(type:String, sender: String, body: String, date: String, read:String, chatBoxName:String): Message
     createPost(author: String, title: String, body: String, type: String, date: String): Post
-    createUser(username:String, email: String, studentID:String, password:String, picture:String, online:Boolean, friends:[String]):createUserResponse
+    createUser(username:String, email: String, password:String, picture:String, online:Boolean, friends:[String]):createUserResponse
+
+    updateUser(username:String, email: String, studentID:String, 
+    picture:String, friends:[String], interest:String, 
+    field:String, skill:String, position:String):createUserResponse
+    
+    editPost(id:ID, title: String, body: String):Post
+    deletePost(id:ID, username:String):DeletePostResponse
+}
+type DeletePostResponse{
+    detail:String
+    success:Boolean
 }
 type Query{
     queryChatBox(name1:String, name2:String):ChatBox
@@ -70,4 +81,9 @@ type User{
     online:Boolean
     friends:[String]
     admin:Boolean
+    interest:String
+    field:String
+    skill:String
+    position:String
+    graduate:Boolean
 }

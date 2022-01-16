@@ -1,5 +1,5 @@
-import {addMessageToChatBox, checkUser, makeName, checkChatBox, newChatBox} from "./utility.js" 
-// import { onLineUserArray, setonLineUserArray } from '../server.js';
+import {addMessageToChatBox, checkUser, makeName, checkChatBox, newChatBox,findPostById, deletePostById } from "./utility.js" 
+import { onLineUserArray, setonLineUserArray } from '../server.js';
 import mongoose from 'mongoose';
 import bcrypt from "bcryptjs"; 
 
@@ -17,7 +17,7 @@ const Mutation={
     },
     async createUser(parent, {username, email, studentID, password, picture, online}, {db, pubsub}, info){
         // determine user exist or not
-        let newUser = await checkUser(db, username, username);
+        let newUser = await checkUser(db, username);
         const saltRounds = 10;
         console.log("checkUser and find", newUser)
         // let passwordHash = await bcrypt.hash(password, saltRounds);
@@ -98,6 +98,64 @@ const Mutation={
             chatBox: newMessage,
           });
         return newMessage;
+    },
+    async updateUser(parent, {username, email, 
+        picture, friends, interest, 
+        field, skill, position}, {db, pubsub}, info){
+        // determine user exist or not
+        let newUser = await checkUser(db, username);
+        const saltRounds = 10;
+        // console.log("updateUser and find", newUser)
+        newUser.username = username;
+        newUser.email = email;
+        newUser.picture = picture;
+        newUser.friends = friends;
+        newUser.interest = interest;
+        newUser.field = field;
+        newUser.skill = skill;
+        newUser.position = position;
+        // console.log("updateUser and find", newUser)
+        // todo unique email
+        if(newUser) {
+            let createUserResponse = {
+                username:username,
+                success:true,
+                detail:"updated"
+            }
+            newUser.save();
+            return createUserResponse
+        }
+        let createUserResponse = {
+            username:username,
+            success:true,
+            detail:"success"
+        }
+
+
+        return createUserResponse;
+    },
+    async editPost(parent, {id, title, body}, {db, pubsub}, info){
+        // edit post by id 
+        console.log()
+        let post = await findPostById(db, id);
+        console.log("editPost and find", post)
+        if(post){
+            post.body = body
+            post.title = title
+        }
+        post.save()
+    
+        return post;
+    },
+    async deletePost(parent, {username, id}, {db, pubsub}, info){
+        // delete post by id 
+        console.log(username, "delete post")
+        let post = await deletePostById(db, id)
+        let deletePostReponse = {
+            detail:username,
+            success:true
+        }
+        return deletePostReponse;
     },
 
 
