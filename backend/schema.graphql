@@ -1,0 +1,73 @@
+type Mutation{
+    createChatBox(name1: String, name2: String): ChatBox
+    createMessage(type:String, sender: String, body: String, date: String, read:String, chatBoxName:String): Message
+    createPost(author: String, title: String, body: String, type: String, date: String): Post
+    createUser(username:String, email: String, studentID:String, password:String, picture:String, online:Boolean, friends:[String]):createUserResponse
+}
+type Query{
+    queryChatBox(name1:String, name2:String):ChatBox
+    queryAllPosts: [Post]
+    # queryPost:String
+    queryAllMembers: [queryAllMembersResponse]
+    queryUser(username:String): User
+    
+    queryLoginUser(username:String, password:String): LoginResponse
+}
+type Subscription{
+    chatBox(chatBoxName:String):Message
+    test:String
+}
+type queryAllMembersResponse{
+    username:String
+    email:String
+    picture:String
+    interest:String
+    field:String
+    skill:String
+    graduate:String
+    position:String
+
+}
+type LoginResponse{
+    success: Boolean
+    detail: String
+    admin: Boolean
+}
+
+type createUserResponse{
+  username:String!
+  success:Boolean!
+  detail:String!
+}
+type ChatBox{
+    id: ID
+    name: String
+    messages: [Message]
+}
+type Message{
+    type: String
+    sender: String
+    body: String
+    date: String
+    read:[String]
+    chatBoxName: String
+}
+type Post{
+    id: ID
+    author: User
+    title: String
+    body: String
+    type: String
+    date: String
+}
+
+type User{
+    username:String
+    email:String
+    studentID:String
+    password:String
+    picture:String
+    online:Boolean
+    friends:[String]
+    admin:Boolean
+}
