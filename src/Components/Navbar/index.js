@@ -1,4 +1,4 @@
-import { Menu, Dropdown, Modal, Button, Steps, message } from 'antd';
+import { Menu, Dropdown, Modal, Button, Steps, message, Tag } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { DownOutlined } from '@ant-design/icons';
 import esoeIcon from "./ESOE_icon.png"
@@ -138,6 +138,10 @@ const MyNavbar = () => {
         <NavBtn>
         <Dropdown overlay={menu} trigger={['hover']}>
           <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+            {admin?
+              <Tag color="#f50">admin</Tag>:
+              <></>
+            }
             {signIn?
             <><UserOutlined />{username}<DownOutlined /></>:
             <><UserOutlined />Account <DownOutlined /></>
